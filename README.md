@@ -46,7 +46,6 @@ Triangle.init().then(() => {
   // draw output
   // ...
   
-  // release memory
   Triangle.freeIO(input, true);
   Triangle.freeIO(output);
 });
@@ -57,7 +56,7 @@ Triangle.init().then(() => {
 ### `init(path)`
 Initialises the WASM module.
 
-- `path` (default `/`) path to `triangle.out.wasm`
+- `path` (default `./`) path to `triangle.out.wasm`
 
 **Returns** a `Promise` which resolves when the .wasm module is ready.
 
@@ -80,7 +79,7 @@ Creates an instance of `TriangulateIO` and allocates memory on the heap. `data` 
 **Returns** an instance of [`TriangulateIO`](#triangulateio)
 
 ### `freeIO(io, all = false)`
-Releases the allocated memory for an input/output instance. The `all` parameter needs a bit of explanation. Triangle copies pointers from input to output, so we need to be careful not to _double-free_. We might want to run several triangulations for the same input, so we can release the output between runs with `freeIO(output)` and only when we're done with both the input and the ouput we use the `all` parameter on one of them i.e. `freeIO(input, true)`
+Releases the allocated memory for an input/output instance.
 
 - `io` reference to the stored i/o object
 - `all` release all copied pointers
@@ -181,13 +180,14 @@ All the `numberof` parameters are set automatically.
 | `numberofregions`             | int (readonly)                                  | Number of regions. Input only, copied to output. |
 | `numberofedges`               | int (readonly)                                  | Number of edges. Output only.  |
 
+## Releasing Memory
 
 ** **IMPORTANT** ** remember to destroy `TriangulateIO` instances after using them to avoid memory leaks.
 
 > While JavaScript is fairly forgiving in cleaning up after itself, static languages [such as C] are definitely not.<br>
 > [Debugging memory leaks in WebAssembly using Emscripten](https://web.dev/webassembly-memory-debugging/)
 
-When we call `makeIO()` we allocate memory ( _malloc_ ) and it needs to be released after ( _free_ ) with `freeIO()`. To make matters even less convenient, Triangle copies pointers from input to output, so we need to be careful not to _double-free_. The solution is to call 'destroy all' `freeIO(io, true)` on one of the instances, either input or output.
+When we call `makeIO()` we allocate memory ( _malloc_ ) and it needs to be released after with `freeIO()` ( _free_ ). To make matters even less convenient, Triangle copies pointers from input to output, so we need to be careful not to _double-free_. The solution is to call 'destroy all' `freeIO(io, true)` on one of the instances, either input or output.
 
 ```js
 // allocate memory
@@ -208,9 +208,8 @@ Triangle.freeIO(output);
 
 - [Triangle](https://www.cs.cmu.edu/~quake/triangle.html) - A Two-Dimensional Quality Mesh Generator and Delaunay Triangulator
 - [poly-parse](https://github.com/brunoimbrizi/poly-parse) - A parser for .poly and .node files used by Triangle.
-- [svg-to-poly](https://github.com/brunoimbrizi/svg-to-poly) - 
+- [svg-to-poly](https://github.com/brunoimbrizi/svg-to-poly) - Extracts a PSLG from .svg paths and prepares it for Triangle.
 
 ## License
 
 MIT, see [LICENSE](LICENSE) for details.
-

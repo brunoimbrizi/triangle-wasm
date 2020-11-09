@@ -127,7 +127,6 @@ const createPane = () => {
     'gift49.svg'      : './assets/gift49.svg',
     'github10.svg'    : './assets/github10.svg',
     'guitar.poly'     : './assets/guitar.poly',
-    'infinity.svg'    : './assets/infinity.svg',
     'instagram.svg'   : './assets/instagram.svg',
     'keyboard13.svg'  : './assets/keyboard13.svg',
     'mesh02.poly'     : './assets/mesh02.poly',

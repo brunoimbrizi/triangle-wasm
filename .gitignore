@@ -1,0 +1,4 @@
+node_modules/
+lib/triangle/
+demo/**/*.wasm
+package-lock.json

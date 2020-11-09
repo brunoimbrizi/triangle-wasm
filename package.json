@@ -1,0 +1,46 @@
+{
+  "name": "triangle",
+  "version": "1.0.0",
+  "description": "TODO",
+  "main": "index.js",
+  "license": "MIT",
+  "author": {
+    "name": "Bruno Imbrizi",
+    "url": "https://github.com/brunoimbrizi"
+  },
+  "dependencies": {
+    "svg-to-poly": "^1.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.3",
+    "array-unflat": "^1.0.1",
+    "babelify": "^10.0.0",
+    "browserify": "^17.0.0",
+    "load-svg": "^1.0.0",
+    "normalize-path-scale": "^2.0.0",
+    "poly-parse": "^1.0.7",
+    "tinyify": "^3.0.0",
+    "tweakpane": "^1.5.6"
+  },
+  "scripts": {
+    "demo:minimal": "budo demo/minimal/:bundle.js --live --dir demo/minimal/",
+    "demo:switches": "budo demo/switches/:bundle.js --live --dir demo/switches/",
+    "build:minimal": "browserify demo/minimal/index.js -t babelify -p tinyify -o demo/minimal/bundle.js",
+    "build:switches": "browserify demo/switches/index.js -t babelify -p tinyify -o demo/switches/bundle.js"
+  },
+  "keywords": [
+    "delaunay",
+    "triangle",
+    "triangulate",
+    "poly",
+    "pslg"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/brunoimbrizi/triangle.git"
+  },
+  "homepage": "https://github.com/brunoimbrizi/triangle",
+  "bugs": {
+    "url": "https://github.com/brunoimbrizi/triangle/issues"
+  }
+}

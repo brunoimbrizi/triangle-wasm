@@ -11,7 +11,7 @@
 			top: 0;
 			left: 0;
 			top: 50%;
-			left: 50%;
+			left: calc((100vw - 300px) * 0.5);
 			transform: translate(-50%, -50%);
 		}
 		h3 {
@@ -36,13 +36,40 @@
 			display: block;
 			margin: 10px 0;
 		}
+		
+		/* tweakpane */
+		.tp-dfwv {
+			width: 300px !important;
+			height: 100%;
+			top: 0px !important;
+			right: 0px !important;
+		}
+		.tp-rotv {
+			height: 100%;
+			font-size: 12px !important;
+		}
+		.tp-rotv, .tp-fldv_t, .tp-fldv_c {
+			border-radius: 0px !important;
+		}
+		.tp-fldv_t {
+			height: 32px !important;
+		}
+		.tp-fldv-expanded {
+			margin-bottom: 6px;
+		}
+		.tp-lblv {
+			padding: 2px 4px;
+		}
+		:root {
+			--tp-font-family: monospace;
+		}
 	</style>
 </head>
 <body>
 	<canvas></canvas>
 	<div class="info">
 		<a href="https://github.com/brunoimbrizi/triangle"><h3>triangle</h3></a>
-		<span>Demo: Minimal</span>
+		<span>Demo: Voronoi</span>
 	</div>
 	<script src="bundle.js" async></script>
 </body>

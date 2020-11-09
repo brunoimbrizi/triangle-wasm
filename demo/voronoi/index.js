@@ -53,6 +53,9 @@ const setup = (data) => {
   // flatten all arrays
   flatten(data);
 
+  // keep points only
+  data.segmentlist = [];
+
   // release old input
   if (input) Triangle.freeIO(input);
   // store new input
@@ -61,21 +64,25 @@ const setup = (data) => {
   update();
 };
 
+const clear = () => {
+  ctx.fillStyle = '#eee';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
 
 // draw onto canvas
-const draw = (data) => {
+const draw = (data, color = 'black', drawNorm = false) => {
   const points = unflat(data.pointlist);
   const triangles = unflat(data.trianglelist, 3);
+  const edges = unflat(data.edgelist);
+  const norm = unflat(data.normlist);
 
   // scale up to 80% of the canvas
   scale(points, canvas.width * 0.4, canvas.height * 0.4);
 
-  ctx.fillStyle = '#eee';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
   ctx.save();
   ctx.translate(canvas.width * 0.5, canvas.height * 0.5);
-  ctx.fillStyle = '#000';
+  ctx.fillStyle = color;
+  ctx.strokeStyle = color;
   ctx.lineWidth = 2;
   ctx.miterLimit = 5;
   
@@ -103,6 +110,48 @@ const draw = (data) => {
       ctx.lineTo(points[b][0], points[b][1]);
       ctx.lineTo(points[c][0], points[c][1]);
       ctx.closePath();
+      ctx.stroke();
+    }
+  }
+
+  // draw edges
+  if (edges) {
+    let a, b;
+    for (let i = 0; i < edges.length; i++) {
+      a = edges[i][0];
+      b = edges[i][1];
+
+      if (b === -1) continue;
+
+      ctx.beginPath();
+      ctx.moveTo(points[a][0], points[a][1]);
+      ctx.lineTo(points[b][0], points[b][1]);
+      ctx.stroke();
+    }
+  }
+
+  // draw norm
+  if (edges && norm && drawNorm) {
+    let a, b, nx, ny, nlen;
+    for (let i = 0; i < edges.length; i++) {
+      a = edges[i][0];
+      b = edges[i][1];
+
+      if (b !== -1) continue;
+
+      nx = norm[i][0];
+      ny = norm[i][1];
+      nlen = Math.sqrt(nx * nx + ny * ny);
+      // normalise
+      nx *= 1 / nlen;
+      ny *= 1 / nlen;
+      // scale up
+      nx *= canvas.width;
+      ny *= canvas.height;
+
+      ctx.beginPath();
+      ctx.moveTo(points[a][0], points[a][1]);
+      ctx.lineTo(points[a][0] + nx, points[a][1] + ny);
       ctx.stroke();
     }
   }
@@ -136,15 +185,11 @@ const createPane = () => {
   };
   
   const params = {
-    quality: false,
-    area: false,
-    ccdt: false,
-    convexHull: false,
-    holes: true,
+    quality: true,
     quiet: true,
-    varea: 0.1,
     vqual: 20,
-    steiner: 300,
+    drawInput: false,
+    drawNorm: true,
     str: '',
     asset: '',
   };
@@ -154,20 +199,24 @@ const createPane = () => {
     if (params.area) switches.area = parseFloat(params.varea.toFixed(3));
     if (params.quality) switches.quality = parseFloat(params.vqual.toFixed(2));
 
-    params.str = Triangle.getSwitchesStr(switches, input);
+    // create output, vorout
+    output = Triangle.makeIO();
+    vorout = Triangle.makeIO();
+
+    // triangulate
+    Triangle.triangulate(switches, input, output, vorout);
+    // update switches string
+    params.str = Triangle.getSwitchesStr(switches, input, vorout);
     pane.refresh();
 
-    // create output
-    output = Triangle.makeIO();
-    // triangulate
-    Triangle.triangulate(switches, input, output);
-    // draw output
-    draw(output);
-    // release outpu
-    Triangle.freeIO(output);
+    // draw output, vorout
+    clear();
+    if (params.drawInput) draw(input, '#CCCCCC');
+    draw(vorout, '#0000FF', params.drawNorm);
 
-    squal.hidden = !params.quality;
-    sarea.hidden = !params.area;
+    // release output, vorout
+    Triangle.freeIO(output);
+    Triangle.freeIO(vorout);
   };
 
   const onAsset = () => {
@@ -177,20 +226,13 @@ const createPane = () => {
   folder = pane.addFolder({ title: 'Assets' });
   folder.addInput(params, 'asset', { options: assets }).on('change', onAsset);
 
-  folder = pane.addFolder({ title: 'Switches' });
-  folder.addInput(params, 'quality').on('change', onChange);
-  squal = folder.addInput(params, 'vqual', { label: 'min angle', min: 0, max: 30 }).on('change', onChange);
-  folder.addInput(params, 'area').on('change', onChange);
-  sarea = folder.addInput(params, 'varea', { label: 'max area', min: 0.005, max: 0.1, step: 0.001 }).on('change', onChange);
-  folder.addInput(params, 'ccdt').on('change', onChange);
-  folder.addInput(params, 'convexHull').on('change', onChange);
-  folder.addInput(params, 'holes').on('change', onChange);
-  folder.addInput(params, 'quiet').on('change', onChange);
-  folder.addInput(params, 'steiner', { min: 0, max: 300, step: 1 }).on('change', onChange);
-  folder.addInput(params, 'str');
+  folder = pane.addFolder({ title: 'Draw' });
+  folder.addInput(params, 'drawInput', { label: 'input' }).on('change', onChange);
+  folder.addInput(params, 'drawNorm', { label: 'norm' }).on('change', onChange);
 
-  squal.hidden = !params.quality;
-  sarea.hidden = !params.area;
+  folder = pane.addFolder({ title: 'Switches' });
+  squal = folder.addInput(params, 'vqual', { label: 'min angle', min: 0, max: 30 }).on('change', onChange);
+  folder.addInput(params, 'str');
 
   update = onChange;
 };

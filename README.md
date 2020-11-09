@@ -51,12 +51,19 @@ Triangle.init().then(() => {
 });
 ```
 
+## Demo
+
+- [Demo: Minimal](https://brunoimbrizi.github.io/triangle/demo/minimal)
+- [Demo: Switches](https://brunoimbrizi.github.io/triangle/demo/switches)
+- [Demo: Voronoi](https://brunoimbrizi.github.io/triangle/demo/voronoi)
+
+
 ## API
 
 ### `init(path)`
 Initialises the WASM module.
 
-- `path` (default `./`) path to `triangle.out.wasm`
+- `path` (default `/`) path to `triangle.out.wasm`
 
 **Returns** a `Promise` which resolves when the .wasm module is ready.
 
@@ -118,7 +125,7 @@ For a full list of switches, see [Command line switches](https://www.cs.cmu.edu/
 For more detailed descriptions of all the switches, see [Triangle's instructions](https://www.cs.cmu.edu/~quake/triangle.help.html).
 
 Some switches are set automatically:
-- `-p` The input is read as a Planar Straight Line Graph if edges or holes are provided. Otherwise read as a list of points.
+- `-p` The input is read as a Planar Straight Line Graph if segments are provided, otherwise it's just a list of points.
 - `-v` Outputs the Voronoi diagram associated with the triangulation when the `vorout` parameter is provided.
 - `-z` All indices always start from zero.
 
@@ -134,10 +141,10 @@ Other examples of `switches` objects and their correspondent strings:
 // default
 switches = null; // zQ
 
-// if input has edges or holes
+// if input is a PSLG (has points and segments)
 switches = null; // pzQ
 
-// quality and conforming Delaunay
+// quality mesh and conforming Delaunay
 switches = { quality: true, ccdt: true }; // pzqDQ
 
 // minimum angle, maximum area and output to console

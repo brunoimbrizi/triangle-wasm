@@ -25,8 +25,10 @@
   "scripts": {
     "demo:minimal": "budo demo/minimal/:bundle.js --live --dir demo/minimal/",
     "demo:switches": "budo demo/switches/:bundle.js --live --dir demo/switches/",
+    "demo:voronoi": "budo demo/voronoi/:bundle.js --live --dir demo/voronoi/",
     "build:minimal": "browserify demo/minimal/index.js -t babelify -p tinyify -o demo/minimal/bundle.js",
-    "build:switches": "browserify demo/switches/index.js -t babelify -p tinyify -o demo/switches/bundle.js"
+    "build:switches": "browserify demo/switches/index.js -t babelify -p tinyify -o demo/switches/bundle.js",
+    "build:voronoi": "browserify demo/voronoi/index.js -t babelify -p tinyify -o demo/voronoi/bundle.js"
   },
   "keywords": [
     "delaunay",

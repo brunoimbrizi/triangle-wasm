@@ -61,7 +61,7 @@ const getSwitchesStr = (obj, input, vorout = null) => {
 	let str = '';
 
 	// is PSLG if there are segments or holes
-	if (input.numberofsegments || input.numberofholes) {
+	if (input.numberofsegments) {
 		str = `${str}p`;
 	}
 	// is Voronoi

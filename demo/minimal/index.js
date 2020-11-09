@@ -11,7 +11,9 @@ canvas.height = 640;
 const data = { pointlist: [-1, -1, 1, -1, 1, 1, -1, 1] };
 
 // init triangle
-Triangle.init().then(() => {
+const path = '../../triangle.out.wasm';
+
+Triangle.init(path).then(() => {
   const input = Triangle.makeIO(data);
   const output = Triangle.makeIO();
   

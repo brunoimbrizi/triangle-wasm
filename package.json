@@ -1,7 +1,7 @@
 {
   "name": "triangle",
   "version": "1.0.0",
-  "description": "TODO",
+  "description": "Javascript wrapper around Triangle - A Two-Dimensional Quality Mesh Generator and Delaunay Triangulator",
   "main": "index.js",
   "license": "MIT",
   "author": {
@@ -9,7 +9,6 @@
     "url": "https://github.com/brunoimbrizi"
   },
   "dependencies": {
-    "svg-to-poly": "^1.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",
@@ -19,6 +18,7 @@
     "load-svg": "^1.0.0",
     "normalize-path-scale": "^2.0.0",
     "poly-parse": "^1.0.7",
+    "svg-to-poly": "^1.0.0",
     "tinyify": "^3.0.0",
     "tweakpane": "^1.5.6"
   },
@@ -31,10 +31,12 @@
     "build:voronoi": "browserify demo/voronoi/index.js -t babelify -p tinyify -o demo/voronoi/bundle.js"
   },
   "keywords": [
+    "conforming",
+    "constrained",
     "delaunay",
+    "triangulation",
+    "quality mesh",
     "triangle",
-    "triangulate",
-    "poly",
     "pslg"
   ],
   "repository": {

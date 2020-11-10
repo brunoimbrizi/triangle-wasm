@@ -107,7 +107,7 @@ Triangle.triangulate('pzQqc', input, output);
 | ------ | ------------- | --------------------------- | ------------ |
 | `-q`   | `quality`     | `boolean`<br>or<br>`number` | Quality mesh generation by Delaunay refinement.<br>Adds vertices to the mesh to ensure that all angles are between 20 and 140 degrees.<br>A minimum angle can be set by passing a `number`. Guaranteed to terminate for 28.6 degrees or smaller. Often succeeds up to 34 degrees. |
 | `-a`   | `area`        | `boolean`<br>or<br>`number` | Imposes a maximum triangle area.<br>A maximum area can be set by passing a `number`.<br>If `true` reads maximum area from the input (i.e. a .poly file) |
-| `-D`   | `ccdt`        | `boolean`                   | Constrained Conforming Delaunay Triangulation |
+| `-D`   | `ccdt`        | `boolean`                   | Conforming constrained Delaunay triangulation |
 | `-r`   | `refine`      | `boolean`                   | Refines a previously generated mesh. |
 | `-c`   | `convexHull`  | `boolean`                   | Creates segments on the convex hull of the triangulation.<br>Beware: if you are not careful, this switch can cause the introduction of an extremely thin angle between a PSLG segment and a convex hull segment, which can cause overrefinement (and possibly failure if Triangle runs out of precision). |
 | `-j`   | `jettison`    | `boolean`                   | Prevents duplicated input vertices, or vertices 'eaten' by holes, from appearing in the output. If any vertices are jettisoned, the vertex numbering in the output differs from that of the input. |
@@ -117,17 +117,15 @@ Triangle.triangulate('pzQqc', input, output);
 | `-A`   | `regionAttr`  | `boolean`                   | Assigns an additional floating-point attribute to each triangle that identifies what segment-bounded region each triangle belongs to. |
 | `-B`   | `bndMarkers`  | `boolean`                   | Output boundary markers. (default `true`)<br>Attention: `-B` works the other way around, if present it suppresses boundary markers. |
 | `-O`   | `holes`       | `boolean`                   | Read holes from the input. (default `true`)<br>Attention: `-O` works the other way around, if present it ignores holes. |
-| `-S`   | `steiner`     | `number`                    | Specifies the maximum number of Steiner points (vertices that are not in the input, but are added to meet the constraints on minimum angle and maximum area). (default unlimited) |
+| `-S`   | `steiner`     | `number`                    | Specifies the maximum number of Steiner points - vertices that are not in the input, but are added to meet the constraints on minimum angle and maximum area. (default unlimited) |
 | `-Q`   | `quiet`       | `boolean`                   | Suppresses all explanation of what Triangle is doing, unless an error occurs. (default `true`) |
+| `-p`   | _auto_        |                             | If `input` contains a list of segments it is read as a PSLG, otherwise as a list of points. (set automatically) |
+| `-v`   | _auto_        |                             | If `vorout` is provided, outputs the Voronoi diagram associated with the triangulation. (set automatically) |
+| `-z`   | _auto_        |                             | Zero based indices, always `true`. (set automatically) |
 
 For a full list of switches, see [Command line switches](https://www.cs.cmu.edu/~quake/triangle.switch.html).
 
 For more detailed descriptions of all the switches, see [Triangle's instructions](https://www.cs.cmu.edu/~quake/triangle.help.html).
-
-Some switches are set automatically:
-- `-p` The input is read as a Planar Straight Line Graph if segments are provided, otherwise it's just a list of points.
-- `-v` Outputs the Voronoi diagram associated with the triangulation when the `vorout` parameter is provided.
-- `-z` All indices always start from zero.
 
 The following are not part of the `switches` object, but can still be passed in as a string:
 - `-u`, `-X`, `-Y`, `-V`
@@ -156,6 +154,7 @@ switches = { bndMarkers: false, holes: false }; // pzQBO
 
 
 ## TriangulateIO
+
 The `TriangulateIO` structure used to pass data into and out of the `triangulate()` procedure.
 
 All the parameters are optional, except for `pointlist`. 
@@ -189,7 +188,7 @@ All the `numberof` parameters are set automatically.
 
 ## Releasing Memory
 
-** **IMPORTANT** ** remember to destroy `TriangulateIO` instances after using them to avoid memory leaks.
+** **IMPORTANT** ** remember to destroy instances of `TriangulateIO` after using them to avoid memory leaks.
 
 > While JavaScript is fairly forgiving in cleaning up after itself, static languages [such as C] are definitely not.<br>
 > [Debugging memory leaks in WebAssembly using Emscripten](https://web.dev/webassembly-memory-debugging/)
@@ -210,6 +209,12 @@ Triangle.triangulate(null, input, output);
 Triangle.freeIO(input, true);
 Triangle.freeIO(output);
 ```
+
+## Voronoi Diagrams
+
+This implementation does not use exact arithmetic to compute the Voronoi vertices, and does not check whether neighboring vertices are identical.
+
+The result is a valid Voronoi diagram only if Triangle's output is a true Delaunay triangulation with no holes. The Voronoi output is usually meaningless (and may contain crossing edges and other pathology) if the output is a constrained Delaunay triangulation (CDT) or a conforming constrained Delaunay triangulation (CCDT), or if it has holes or concavities.
 
 ## See Also
 

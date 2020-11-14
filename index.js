@@ -60,14 +60,12 @@ const getSwitchesStr = (obj, input, vorout = null) => {
 
 	let str = '';
 
-	// is PSLG if there are segments or holes
-	if (input.numberofsegments) {
-		str = `${str}p`;
-	}
-	// is Voronoi
-	if (vorout !== null) str = `${str}v`;
+	// PSLG by default
+	if (obj.pslg				!== false) 	str = `${str}p`;
 	// zero-based by default
 	str = `${str}z`;
+	// is Voronoi
+	if (vorout 					!== null) 	str = `${str}v`;
 	// quiet by default
 	if (obj.quiet				!== false) 	str = `${str}Q`;
 
@@ -279,7 +277,7 @@ class TriangulateIO {
 	}
 
 	get trianglelist() {
-		return heapToArray(this.arr[5], this.numberoftriangles * 3);
+		return heapToArray(this.arr[5], this.numberoftriangles * this.numberofcorners);
 	}
 
 	get triangleattributelist() {

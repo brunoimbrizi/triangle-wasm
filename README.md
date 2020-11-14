@@ -105,22 +105,22 @@ Triangle.triangulate('pzQqc', input, output);
 
 | string | switch        | type                        | description  |
 | ------ | ------------- | --------------------------- | ------------ |
+| `-p`   | `pslg`        | `boolean`                   | Read input as a Planar Straight Line Graph. (default `true`) |
 | `-q`   | `quality`     | `boolean`<br>or<br>`number` | Quality mesh generation by Delaunay refinement.<br>Adds vertices to the mesh to ensure that all angles are between 20 and 140 degrees.<br>A minimum angle can be set by passing a `number`. Guaranteed to terminate for 28.6 degrees or smaller. Often succeeds up to 34 degrees. |
 | `-a`   | `area`        | `boolean`<br>or<br>`number` | Imposes a maximum triangle area.<br>A maximum area can be set by passing a `number`.<br>If `true` reads maximum area from the input (i.e. a .poly file) |
 | `-D`   | `ccdt`        | `boolean`                   | Conforming constrained Delaunay triangulation |
-| `-r`   | `refine`      | `boolean`                   | Refines a previously generated mesh. |
-| `-c`   | `convexHull`  | `boolean`                   | Creates segments on the convex hull of the triangulation.<br>Beware: if you are not careful, this switch can cause the introduction of an extremely thin angle between a PSLG segment and a convex hull segment, which can cause overrefinement (and possibly failure if Triangle runs out of precision). |
-| `-j`   | `jettison`    | `boolean`                   | Prevents duplicated input vertices, or vertices 'eaten' by holes, from appearing in the output. If any vertices are jettisoned, the vertex numbering in the output differs from that of the input. |
-| `-e`   | `edges`       | `boolean`                   | Outputs a list of edges of the triangulation. |
-| `-n`   | `neighbors`   | `boolean`                   | Outputs a list of triangles neighboring each triangle. |
-| `-o2`  | `quadratic`   | `boolean`                   | Generates second-order subparametric elements with six nodes each. |
-| `-A`   | `regionAttr`  | `boolean`                   | Assigns an additional floating-point attribute to each triangle that identifies what segment-bounded region each triangle belongs to. |
+| `-r`   | `refine`      | `boolean`                   | Refine a previously generated mesh. |
+| `-c`   | `convexHull`  | `boolean`                   | Create segments on the convex hull of the triangulation.<br>Beware: if you are not careful, this switch can cause the introduction of an extremely thin angle between a PSLG segment and a convex hull segment, which can cause overrefinement (and possibly failure if Triangle runs out of precision). |
+| `-j`   | `jettison`    | `boolean`                   | Prevent duplicated input vertices, or vertices 'eaten' by holes, from appearing in the output. If any vertices are jettisoned, the vertex numbering in the output differs from that of the input. |
+| `-e`   | `edges`       | `boolean`                   | Output a list of edges of the triangulation. |
+| `-n`   | `neighbors`   | `boolean`                   | Output a list of triangles neighboring each triangle. |
+| `-o2`  | `quadratic`   | `boolean`                   | Generate second-order subparametric elements with six nodes each. |
+| `-A`   | `regionAttr`  | `boolean`                   | Assign an additional floating-point attribute to each triangle that identifies what segment-bounded region each triangle belongs to. |
 | `-B`   | `bndMarkers`  | `boolean`                   | Output boundary markers. (default `true`)<br>Attention: `-B` works the other way around, if present it suppresses boundary markers. |
 | `-O`   | `holes`       | `boolean`                   | Read holes from the input. (default `true`)<br>Attention: `-O` works the other way around, if present it ignores holes. |
-| `-S`   | `steiner`     | `number`                    | Specifies the maximum number of Steiner points - vertices that are not in the input, but are added to meet the constraints on minimum angle and maximum area. (default unlimited) |
-| `-Q`   | `quiet`       | `boolean`                   | Suppresses all explanation of what Triangle is doing, unless an error occurs. (default `true`) |
-| `-p`   | _auto_        |                             | If `input` contains a list of segments it is read as a PSLG, otherwise as a list of points. (set automatically) |
-| `-v`   | _auto_        |                             | If `vorout` is provided, outputs the Voronoi diagram associated with the triangulation. (set automatically) |
+| `-S`   | `steiner`     | `number`                    | Maximum number of Steiner points - vertices that are not in the input, but are added to meet the constraints on minimum angle and maximum area. (default unlimited) |
+| `-Q`   | `quiet`       | `boolean`                   | Suppress all explanation of what Triangle is doing, unless an error occurs. (default `true`) |
+| `-v`   | _auto_        |                             | When `vorout` is provided, output the Voronoi diagram associated with the triangulation. (set automatically) |
 | `-z`   | _auto_        |                             | Zero based indices, always `true`. (set automatically) |
 
 For a full list of switches, see [Command line switches](https://www.cs.cmu.edu/~quake/triangle.switch.html).
@@ -137,9 +137,6 @@ The following switches have no effect in the Javascript version of Triangle:
 Other examples of `switches` objects and their correspondent strings:
 ```js
 // default
-switches = null; // zQ
-
-// if input is a PSLG (has points and segments)
 switches = null; // pzQ
 
 // quality mesh and conforming Delaunay

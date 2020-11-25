@@ -33,9 +33,7 @@ fi
     ${OPTIMISE} \
     ${SANITISE} \
     ./triangle/triangle.c -DTRILIBRARY
-
-  # TEMP copy wasm
-  cp triangle.out.wasm ../parse
-  cp triangle.out.wasm ../demo/minimal
-  cp triangle.out.wasm ../demo/switches
 )
+
+# Usage:
+# ./build.sh -o

@@ -41,7 +41,7 @@ Triangle.init().then(() => {
   const input = Triangle.makeIO(data);
   const output = Triangle.makeIO();
   
-  Triangle.triangulate({ quality: true }, input, output);
+  Triangle.triangulate({ pslg: false, quality: true }, input, output);
   
   // draw output
   // ...

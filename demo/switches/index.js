@@ -2,11 +2,13 @@ const Triangle = require('../../');
 const polyparse = require('poly-parse');
 const svgToPoly = require('svg-to-poly');
 const loadSvg = require('load-svg');
+const opentype = require('opentype.js');
 const unflat = require('array-unflat');
 const Tweakpane = require('tweakpane');
 
 // local vars
-let input, output, update;
+let input, output, update, font;
+let text = 'E';
 
 // init canvas
 const canvas = document.querySelector('canvas');
@@ -39,7 +41,7 @@ const load = (path) => {
     });
   }
   // poly or node
-  else {
+  else if (path.includes('.poly') || path.includes('.node')) {
     fetch(path)
     .then(result => result.text())
     .then(result => {
@@ -47,6 +49,22 @@ const load = (path) => {
       setup(data);
     });
   }
+  // font
+  else {
+    opentype.load(path, (err, _font) => {
+      if (err) throw err;
+
+      font = _font;
+      updateText();
+    });
+  }
+};
+
+const updateText = () => {
+  const path = font.getPath(text, 0, 0, 120);
+  const svg = path.toSVG();
+  const data = svgToPoly(svg, { normalize: true });
+  setup(data);
 };
 
 const setup = (data) => {
@@ -65,7 +83,7 @@ const setup = (data) => {
 // draw onto canvas
 const draw = (data) => {
   const points = unflat(data.pointlist);
-  const triangles = unflat(data.trianglelist, 3);
+  const triangles = unflat(data.trianglelist, data.numberofcorners);
 
   // scale up to 80% of the canvas
   scale(points, canvas.width * 0.4, canvas.height * 0.4);
@@ -113,7 +131,7 @@ const draw = (data) => {
 
 // parameters panel
 const createPane = () => {
-  let folder, squal, sarea;
+  let folder, squal, sarea, stext;
   const pane = new Tweakpane();
 
   const assets = {
@@ -133,6 +151,7 @@ const createPane = () => {
     'question23.svg'  : './assets/question23.svg',
     'vimeo.svg'       : './assets/vimeo.svg',
     'volume29.svg'    : './assets/volume29.svg',
+    'times-subset.ttf': './assets/times-subset.ttf',
   };
   
   const params = {
@@ -145,6 +164,7 @@ const createPane = () => {
     varea: 0.1,
     vqual: 20,
     steiner: 300,
+    text: text,
     str: '',
     asset: '',
   };
@@ -168,14 +188,21 @@ const createPane = () => {
 
     squal.hidden = !params.quality;
     sarea.hidden = !params.area;
+    stext.hidden = !params.asset.includes('.ttf');
   };
 
   const onAsset = () => {
     load(params.asset);
   };
 
+  const onText = () => {
+    text = params.text.substr(0, 4);
+    updateText();
+  };
+
   folder = pane.addFolder({ title: 'Assets' });
   folder.addInput(params, 'asset', { options: assets }).on('change', onAsset);
+  stext = folder.addInput(params, 'text').on('change', onText);
 
   folder = pane.addFolder({ title: 'Switches' });
   folder.addInput(params, 'quality').on('change', onChange);
@@ -191,6 +218,7 @@ const createPane = () => {
 
   squal.hidden = !params.quality;
   sarea.hidden = !params.area;
+  stext.hidden = !params.asset.includes('.ttf');
 
   update = onChange;
 };

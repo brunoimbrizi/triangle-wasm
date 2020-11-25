@@ -17,6 +17,7 @@
     "browserify": "^17.0.0",
     "load-svg": "^1.0.0",
     "normalize-path-scale": "^2.0.0",
+    "opentype.js": "^1.3.3",
     "poly-parse": "^1.0.7",
     "svg-to-poly": "^1.0.0",
     "tinyify": "^3.0.0",

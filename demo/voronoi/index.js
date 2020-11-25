@@ -53,9 +53,6 @@ const setup = (data) => {
   // flatten all arrays
   flatten(data);
 
-  // keep points only
-  data.segmentlist = [];
-
   // release old input
   if (input) Triangle.freeIO(input);
   // store new input
@@ -185,6 +182,7 @@ const createPane = () => {
   };
   
   const params = {
+    pslg: false,
     quality: true,
     quiet: true,
     vqual: 20,

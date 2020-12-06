@@ -63,7 +63,7 @@ Triangle.init().then(() => {
 ### `init(path)`
 Initialises the WASM module.
 
-- `path` (default `/`) path to `triangle.out.wasm`
+- `path` (default `/`) path to `triangle.out.wasm` (See [Distributing WASM](#distributing-wasm))
 
 **Returns** a `Promise` which resolves when the .wasm module is ready.
 
@@ -71,7 +71,7 @@ Initialises the WASM module.
 ### `triangulate(switches, input, output, vorout = null)`
 Triangulates the data passed in as `input` and writes the result to `ouput` (and the optional Voronoi result to `vorout`).
 
-- `switches` an object or a string of switches
+- `switches` an object or a string of [switches](#switches)
 - `input` an instance of `TriangulateIO` - the input data
 - `output` an instance of `TriangulateIO` - initialised, but empty
 - `vorout` an instance of `TriangulateIO` - initialised, but empty (optional)
@@ -213,7 +213,7 @@ This implementation does not use exact arithmetic to compute the Voronoi vertice
 
 The result is a valid Voronoi diagram only if Triangle's output is a true Delaunay triangulation with no holes. The Voronoi output is usually meaningless (and may contain crossing edges and other pathology) if the output is a constrained Delaunay triangulation (CDT) or a conforming constrained Delaunay triangulation (CCDT), or if it has holes or concavities.
 
-## WASM
+## Distributing WASM
 The .wasm file is distributed with the package, but it might be necessary to manually copy it out of `/node_modules/triangle.js/` so it can be served as a static file or bundled with a loader. This might change in the future once it becomes clear what is the best way to distribute wasm libraries.
 
 This repository doesn't contain the original C code for Triangle, only the compiled .wasm. The source code [can be found here](https://www.cs.cmu.edu/~quake/triangle.html).

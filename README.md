@@ -1,11 +1,11 @@
-Triangle
-========
+Triangle.js
+===========
 
 Javascript wrapper around [Triangle](https://www.cs.cmu.edu/~quake/triangle.html) - A Two-Dimensional Quality Mesh Generator and Delaunay Triangulator.
 
 > Triangle generates exact Delaunay triangulations, constrained Delaunay triangulations, conforming Delaunay triangulations, Voronoi diagrams, and high-quality triangular meshes.  The latter can be generated with no small or large angles, and are thus suitable for finite element analysis.
 
-[Triangle](https://www.cs.cmu.edu/~quake/triangle.html) was created at Carnegie Mellon University by Jonathan Shewchuk.
+[Triangle](https://www.cs.cmu.edu/~quake/triangle.html) was created at the Carnegie Mellon University by Jonathan Shewchuk.
 
 This is a Javascript wrapper around the original C library, compiled to WebAssembly using [Emscripten](https://emscripten.org/). The API was preserved, consisting of a single method `triangulate()` and an input/output object `triangulateio`. Other methods were added to bridge WASM and Javascript.
 
@@ -28,12 +28,12 @@ This is a Javascript wrapper around the original C library, compiled to WebAssem
 
 ## Install
 ```
-npm install triangle
+npm install triangle.js
 ```
 
 ## Example
 ```js
-const Triangle = require('triangle');
+const Triangle = require('triangle.js');
 
 const data = { pointlist: [-1, -1, 1, -1, 1, 1, -1, 1] };
 
@@ -69,12 +69,12 @@ Initialises the WASM module.
 
 
 ### `triangulate(switches, input, output, vorout = null)`
-Triangulates the data passed in as `input` and writes the result to `ouput` (and the Voronoi result to `vorout`).
+Triangulates the data passed in as `input` and writes the result to `ouput` (and the optional Voronoi result to `vorout`).
 
 - `switches` an object or a string of switches
 - `input` an instance of `TriangulateIO` - the input data
 - `output` an instance of `TriangulateIO` - initialised, but empty
-- `vorout` an instance of `TriangulateIO` - initialised, but empty (Optional)
+- `vorout` an instance of `TriangulateIO` - initialised, but empty (optional)
 
 **Returns** null
 
@@ -213,11 +213,17 @@ This implementation does not use exact arithmetic to compute the Voronoi vertice
 
 The result is a valid Voronoi diagram only if Triangle's output is a true Delaunay triangulation with no holes. The Voronoi output is usually meaningless (and may contain crossing edges and other pathology) if the output is a constrained Delaunay triangulation (CDT) or a conforming constrained Delaunay triangulation (CCDT), or if it has holes or concavities.
 
+## WASM
+The .wasm file is distributed with the package, but it might be necessary to manually copy it out of `/node_modules/triangle.js/` so it can be served as a static file or bundled with a loader. This might change in the future once it becomes clear what is the best way to distribute wasm libraries.
+
+This repository doesn't contain the original C code for Triangle, only the compiled .wasm. The source code [can be found here](https://www.cs.cmu.edu/~quake/triangle.html).
+
 ## See Also
 
 - [Triangle](https://www.cs.cmu.edu/~quake/triangle.html) - A Two-Dimensional Quality Mesh Generator and Delaunay Triangulator
 - [poly-parse](https://github.com/brunoimbrizi/poly-parse) - A parser for .poly and .node files used by Triangle.
 - [svg-to-poly](https://github.com/brunoimbrizi/svg-to-poly) - Extracts a PSLG from .svg paths and prepares it for Triangle.
+- [opentype.js](https://github.com/opentypejs/opentype.js) - Read and write OpenType fonts using JavaScript.
 
 ## License
 

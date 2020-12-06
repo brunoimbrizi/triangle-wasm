@@ -1,5 +1,5 @@
 {
-  "name": "triangle",
+  "name": "triangle.js",
   "version": "1.0.0",
   "description": "Javascript wrapper around Triangle - A Two-Dimensional Quality Mesh Generator and Delaunay Triangulator",
   "main": "index.js",
@@ -42,10 +42,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/brunoimbrizi/triangle.git"
+    "url": "git://github.com/brunoimbrizi/triangle.js.git"
   },
-  "homepage": "https://github.com/brunoimbrizi/triangle",
+  "homepage": "https://github.com/brunoimbrizi/triangle.js",
   "bugs": {
-    "url": "https://github.com/brunoimbrizi/triangle/issues"
+    "url": "https://github.com/brunoimbrizi/triangle.js/issues"
   }
 }

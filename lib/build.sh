@@ -30,6 +30,7 @@ fi
     -s EXPORTED_RUNTIME_METHODS="['lengthBytesUTF8', 'stringToUTF8']" \
     -s EXPORTED_FUNCTIONS="['_malloc', '_free', '_triangulate']" \
     -o triangle.out.js \
+    -s WASM=1 \
     ${OPTIMISE} \
     ${SANITISE} \
     ./triangle/triangle.c -DTRILIBRARY

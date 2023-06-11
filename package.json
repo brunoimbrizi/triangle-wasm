@@ -47,5 +47,10 @@
   "homepage": "https://github.com/brunoimbrizi/triangle-wasm",
   "bugs": {
     "url": "https://github.com/brunoimbrizi/triangle-wasm/issues"
+  },
+  "browser": {
+    "fs": false,
+    "path": false,
+    "os": false
   }
 }

@@ -227,4 +227,4 @@ This repository doesn't contain the original C code for Triangle, only the compi
 
 ## License
 
-MIT, see [LICENSE](LICENSE) for details.
+Please refer to the original Triangle [license](https://github.com/libigl/triangle/blob/master/README).
